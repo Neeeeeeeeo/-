@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提词器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .lyrics {
+            font-size: 2em;
+            line-height: 1.5em;
+            margin: 20px;
+            height: calc(80vh - 40px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* 使滚动更平滑 */
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .controls button {
+            background-color: transparent;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: white;
+        }
+
+        .speed-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .speed-control label {
+            margin-right: 10px;
+        }
+
+        .speed-control input {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="lyrics" id="lyrics">
+        <p>踏み込むぜアクセル</p>
+        <p>駆け引きは無いさ、そうだよ</p>
+        <p>夜をぬける</p>
+        <p>ねじ込むさ最後に</p>
+        <p>差し引きゼロさ、そうだよ</p>
+        <p>日々を削る</p>
+        <p>心をそっと開いて</p>
+        <p>ギュっと引き寄せたら</p>
+        <p>届くよきっと伝うよもっと</p>
+        <p>さあ</p>
+        <p>生き急いで搾り取って</p>
+        <p>縺れる足だけど前より</p>
+        <p>ずっとそう、遠くへ</p>
+        <p>奪い取って掴んだって</p>
+        <p>君じゃないなら</p>
+        <p>意味は無いのさ</p>
+        <p>だからもっと もっと もっと 遥か彼方</p>
+        <p>踏み込むぜアクセル</p>
+        <p>駆け引きは無いさ、そうだよ</p>
+        <p>夜をぬける</p>
+        <p>ねじ込むさ最後に</p>
+        <p>差し引きゼロさ、そうだよ</p>
+        <p>日々を削る</p>
+        <p>心をそっと開いて</p>
+        <p>ギュっと引き寄せたら</p>
+        <p>届くよきっと 伝うよもっと</p>
+        <p>さあ</p>
+        <p>生き急いで搾り取って</p>
+        <p>縺れる足だけど前より</p>
+        <p>ずっとそう、遠くへ</p>
+        <p>奪い取って掴んだって</p>
+        <p>君じゃないなら</p>
+        <p>意味は無いのさ</p>
+        <p>だから、嗚呼、遥か彼方</p>
+        <p>偽る事に慣れた君の世界を</p>
+        <p>塗り潰すのさ、白く</p>
+        <p>白く</p>
+    </div>
+
+    <div class="controls">
+        <button onclick="start()">▶</button>
+        <button onclick="pause()">⏸</button>
+        <button onclick="reset()">⟳</button>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">速度:</label>
+        <input type="range" id="speedRange" min="10" max="50" value="50" oninput="changeSpeed(this.value)">
+    </div>
+
+    <script>
+        let scrolling;
+        let speed = 50; // 默认速度
+
+        function start() {
+            if (!scrolling) {
+                scrolling = setInterval(() => {
+                    const lyricsElement = document.getElementById('lyrics');
+                    lyricsElement.scrollTop += 1; // 每次向下滚动1像素
+                    if (lyricsElement.scrollTop >= lyricsElement.scrollHeight - lyricsElement.clientHeight) {
+                        lyricsElement.scrollTop = 0; // 如果到底，重置回顶部
+                    }
+                }, speed);
+            }
+        }
+
+        function pause() {
+            clearInterval(scrolling);
+            scrolling = null;
+        }
+
+        function reset() {
+            document.getElementById('lyrics').scrollTop = 0;
+        }
+
+        function changeSpeed(newSpeed) {
+            speed = newSpeed;
+            if (scrolling) {
+                pause();
+                start();
+            }
+        }
+    </script>
+</body>
+</html>
